@@ -1,6 +1,45 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+//#include <windows.h>
+
+typedef struct movie {
+    
+    int serial_num;
+    char *title;
+    char *genre;
+    char *director;
+    char *year;
+    char *time;
+    char *actors;
+    director *direc
+    movie *next;
+    
+} movie;
+
+typedef struct director {
+    
+    int serial_num;
+    char *name;
+    char *sex;
+    char *birth;
+    char *best_movie;
+    
+    director *next;
+    
+} director;
+
+typedef struct actor {
+    
+    int serial_num;
+    char *name;
+    char *sex;
+    char *birth;
+    char *best_movie;
+    actor *next;
+    
+} actor;
 
 //cheolsoon
 
@@ -9,12 +48,15 @@
 //junwon
 
 //seung mo
+
+
+
 int print(char *test){
 	printf("test = %s\n", test);
 	return 0;
 }
 
-void put_commend(char *a){
+void put_command(char *a){
     printf("(movie) ");
 	scanf("%[^\n]", a);
    
@@ -111,18 +153,20 @@ void put_commend(char *a){
 	}
 	else if (!strcmp(*tok, "end"))
 	{
+        
 	}
 	else
 	{
 	}
-//    print(*tok);
+    print(*tok);
 
 }
 
 int main(void){
 	char *a = (char *)malloc(sizeof(char));
-
- 	put_commend(a);
+    while(1){
+        put_command(a);
+    }
 //    print(a);
 
 	printf("\n");
