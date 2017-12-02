@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <signal.h>
+
+#define DEBUG 0
+
 //#include <windows.h>
 
 typedef struct movie {
@@ -40,14 +44,27 @@ typedef struct actor {
     
 } actor;
 
-void init_data (movie *, char *, char *, char *, char *, char *, char *);
+void init_movie (movie *, char *, char *, char *, char *, char *, char *);
+void add_movie (movie *, char *, char *, char *, char *, char *, char *);
 
+void init_actor (actor *, char *, char *, char *, char *);
+void add_actor (actor *, char *, char *, char *, char *);
 
-movie *m;
-director *d;
-actor *a;
+void init_director (director *, char *, char *, char *, char *);
+void add_director (director *, char *, char *, char *, char *);
 
-int size_of_data = 0;
+void movie_log(int, int, char *, char *, char *, char *, char *, char *);
+
+void end();
+
+movie *m_point;
+director *d_point;
+actor *a_point;
+
+int size_of_movie = 0;
+int size_of_actor = 0;
+int size_of_director = 0;
+
 //cheolsoon
 /*
 void search_main(char *s_opt1, char *s_opt2)
@@ -176,56 +193,144 @@ void print(char * p_opt1, char * p_opt2)
 
 //junwon
 void add(char *mda){
-    char *t;
-    t = (char *)malloc(sizeof(char) * 100);
-    char *g = (char *)malloc(sizeof(char) * 100);
-    char *d = (char *)malloc(sizeof(char) * 100);
-    char *y = (char *)malloc(sizeof(char) * 100);
-    char *r = (char *)malloc(sizeof(char) * 100);
-    char *a = (char *)malloc(sizeof(char) * 100);
     
-    printf(" title > ");
-    scanf("%s[^\n]", t);
+    if (!strcmp(mda, "m")){
+        char *t = (char *)malloc(sizeof(char) * 100);
+        char *g = (char *)malloc(sizeof(char) * 100);
+        char *d = (char *)malloc(sizeof(char) * 100);
+        char *y = (char *)malloc(sizeof(char) * 100);
+        char *r = (char *)malloc(sizeof(char) * 100);
+        char *a = (char *)malloc(sizeof(char) * 100);
+        
+        printf(" title > ");
+        scanf("%[^\n]", t);
+        getchar();
+        
+        printf(" genre > ");
+        scanf("%[^\n]", g);
+        getchar();
+        
+        printf(" director > ");
+        scanf("%[^\n]", d);
+        getchar();
+        
+        printf(" year > ");
+        scanf("%[^\n]", y);
+        getchar();
+        
+        printf(" run time > ");
+        scanf("%[^\n]", r);
+        getchar();
+        
+        printf(" actors >  ");
+        scanf("%[^\n]", a);
+        getchar();
+        
+        if(size_of_movie == 0){
+            printf("init_movie");
+            init_movie(m_point, t, g, d, y, r, a);
+            size_of_movie++;
+        }
+        else{
+            printf("add_movie");
+            add_movie(m_point, t, g, d, y, r, a);
+            size_of_movie++;
+        }
+        
+    }
+    else if (!strcmp(mda, "d")){
+        char *n = (char *)malloc(sizeof(char) * 100);
+        char *s = (char *)malloc(sizeof(char) * 100);
+        char *b = (char *)malloc(sizeof(char) * 100);
+        char *m = (char *)malloc(sizeof(char) * 100);
+        
+        printf(" name > ");
+        scanf("%s[^\n]", n);
+        getchar();
+        
+        printf(" sex > ");
+        scanf("%s", s);
+        getchar();
+        
+        printf(" birth > ");
+        scanf("%s[^\n]", b);
+        getchar();
+        
+        printf(" best movie > ");
+        scanf("%s", m);
+        getchar();
+        
+        if(size_of_director == 0){
+            init_director(d_point, n, s, b, m);
+            size_of_director++;
+        }
+        else{
+            add_director(d_point, n, s, b, m);
+            size_of_director++;
+        }
     
-    printf(" genre > ");
-    scanf("%s", g);
+    }
+    else if (!strcmp(mda, "a")){
+        char *n = (char *)malloc(sizeof(char) * 100);
+        char *s = (char *)malloc(sizeof(char) * 100);
+        char *b = (char *)malloc(sizeof(char) * 100);
+        char *m = (char *)malloc(sizeof(char) * 100);
+        
+        printf(" name > ");
+        scanf("%s[^\n]", n);
+        getchar();
+        
+        printf(" sex > ");
+        scanf("%s", s);
+        getchar();
+        
+        printf(" birth > ");
+        scanf("%s[^\n]", b);
+        getchar();
+        
+        printf(" best movie > ");
+        scanf("%s", m);
+        getchar();
+        
+        if(size_of_actor == 0){
+            init_actor(a_point, n, s, b, m);
+            size_of_actor++;
+        }
+        else{
+            add_actor(a_point, n, s, b, m);
+            size_of_actor++;
+        }
+        
+    }
     
-    getchar();
-    
-    printf(" director > ");
-    scanf("%s[^\n]", d);
-    
-    printf(" year > ");
-    scanf("%s", y);
+//    printf(" title > %s\n", m_point -> title);
+//    printf(" genre > %s\n", m_point -> genre);
+//    printf(" director > %s\n", m_point -> director);
+//    printf(" year > %s\n", m_point -> year);
+//    printf(" run time > %s\n", m_point -> time);
+//    printf(" actors > %s\n", m_point -> actors);
+//    
+//    if(size_of_movie == 2){
+//        printf(" title > %s\n", m_point -> next -> title);
+//        printf(" genre > %s\n", m_point -> next -> genre);
+//        printf(" director > %s\n", m_point -> next -> director);
+//        printf(" year > %s\n", m_point -> next -> year);
+//        printf(" run time > %s\n", m_point -> next -> time);
+//        printf(" actors > %s\n", m_point -> next -> actors);
+//    }
 
-    getchar();
-    
-    printf(" run time > ");
-    scanf("%s", r);
-    
-    getchar();
-    
-    printf(" actors >  ");
-    scanf("%[^\n]", a);
-    
-    if(size_of_data == 0)
-        init_data(m, t, g, d, y, r, a);
-    
-    printf(" title > %s\n", m -> title);
-    printf(" genre > %s\n", m -> genre);
-    printf(" director > %s\n", m -> director);
-    printf(" year > %s\n", m -> year);
-    printf(" run time > %s\n", m -> time);
-    printf(" actors > %s\n", m -> actors);
-    
-    
-    
     return;
 }
 
 //seung mo
 
-void init_data (movie *movie_init, char *t, char *g, char *d, char *y, char *r, char *a){
+/*******************************************/
+//                                         //
+// movie, actor, director init or add      //
+//                                         //
+/*******************************************/
+
+void init_movie (movie *movie_init, char *t, char *g, char *d, char *y, char *r, char *a){
 //    movie_init = (movie *)malloc(sizeof(movie));
     movie_init -> title = (char *)malloc(sizeof(char) * (strlen(t) + 1));
     movie_init -> genre = (char *)malloc(sizeof(char) * (strlen(g) + 1));
@@ -233,6 +338,8 @@ void init_data (movie *movie_init, char *t, char *g, char *d, char *y, char *r, 
     movie_init -> year = (char *)malloc(sizeof(char) * (strlen(y)+ 1));
     movie_init -> time = (char *)malloc(sizeof(char) * (strlen(r) + 1));
     movie_init -> actors = (char *)malloc(sizeof(char) * (strlen(a) + 1));
+    
+    movie_init -> serial_num = 1;
     
     strcpy(movie_init -> title, t);
     strcpy(movie_init -> genre, g);
@@ -242,34 +349,177 @@ void init_data (movie *movie_init, char *t, char *g, char *d, char *y, char *r, 
     strcpy(movie_init -> actors, a);
     
     movie_init -> next = NULL;
+    movie_init -> direc = NULL;
+    
+    movie_log(1, movie_init -> serial_num, movie_init -> title, movie_init -> genre, movie_init -> director, movie_init -> year, movie_init -> time, movie_init -> actors);
 }
 
-void put_command(char *a){
-    printf("(movie) ");
-	scanf("%[^\n]", a);
+void add_movie(movie *movie_add, char *t, char *g, char *d, char *y, char *r, char *a){
+    
+    int num =1;
+    
+    while(movie_add -> next != NULL){
+        movie_add = movie_add -> next;
+        num++;
+    }
+    
+    movie_add -> next = (movie *)malloc(sizeof(movie));
+    movie_add = movie_add -> next;
+    
+    movie_add -> title = (char *)malloc(sizeof(char) * (strlen(t) + 1));
+    movie_add -> genre = (char *)malloc(sizeof(char) * (strlen(g) + 1));
+    movie_add -> director = (char *)malloc(sizeof(char) * (strlen(d) + 1));
+    movie_add -> year = (char *)malloc(sizeof(char) * (strlen(y)+ 1));
+    movie_add -> time = (char *)malloc(sizeof(char) * (strlen(r) + 1));
+    movie_add -> actors = (char *)malloc(sizeof(char) * (strlen(a) + 1));
+    
+    movie_add -> serial_num = num + 1;
+    
+    strcpy(movie_add -> title, t);
+    strcpy(movie_add -> genre, g);
+    strcpy(movie_add -> director, d);
+    strcpy(movie_add -> year, y);
+    strcpy(movie_add -> time, r);
+    strcpy(movie_add -> actors, a);
+    
+    movie_add -> next = NULL;
+    movie_add -> direc = NULL;
+    
+     movie_log(1, movie_add -> serial_num, movie_add -> title, movie_add -> genre, movie_add -> director, movie_add -> year, movie_add -> time, movie_add -> actors);
+    
+}
 
+void init_actor(actor *actor_init, char *n, char *s, char *b, char *m){
+    actor_init -> name = (char *)malloc(sizeof(char) * (strlen(n) + 1));
+    actor_init -> sex = (char *)malloc(sizeof(char) * (strlen(s) + 1));
+    actor_init -> birth = (char *)malloc(sizeof(char) * (strlen(b) + 1));
+    actor_init -> best_movie = (char *)malloc(sizeof(char) * (strlen(m)+ 1));
+    
+    actor_init -> serial_num = 1;
+    
+    strcpy(actor_init -> name, n);
+    strcpy(actor_init -> sex, s);
+    strcpy(actor_init -> birth, b);
+    strcpy(actor_init -> best_movie, m);
+    
+    actor_init -> next = NULL;
+}
+
+void add_actor(actor *actor_add, char *n, char *s, char *b, char *m){
+    
+    int num =0;
+    
+    while(actor_add -> next != NULL){
+        actor_add = actor_add -> next;
+        num++;
+    }
+    
+    actor_add -> next = (actor *)malloc(sizeof(actor));
+    actor_add = actor_add -> next;
+    
+    actor_add -> name = (char *)malloc(sizeof(char) * (strlen(n) + 1));
+    actor_add -> sex = (char *)malloc(sizeof(char) * (strlen(s) + 1));
+    actor_add -> birth = (char *)malloc(sizeof(char) * (strlen(b) + 1));
+    actor_add -> best_movie = (char *)malloc(sizeof(char) * (strlen(m)+ 1));
+    
+    actor_add -> serial_num = num + 1;
+    
+    strcpy(actor_add -> name, n);
+    strcpy(actor_add -> sex, s);
+    strcpy(actor_add -> birth, b);
+    strcpy(actor_add -> best_movie, m);
+    
+    actor_add -> next = NULL;
+}
+
+void init_director(director *director_init, char *n, char *s, char *b, char *m){
+    director_init -> name = (char *)malloc(sizeof(char) * (strlen(n) + 1));
+    director_init -> sex = (char *)malloc(sizeof(char) * (strlen(s) + 1));
+    director_init -> birth = (char *)malloc(sizeof(char) * (strlen(b) + 1));
+    director_init -> best_movie = (char *)malloc(sizeof(char) * (strlen(m)+ 1));
+    
+    director_init -> serial_num = 1;
+    
+    strcpy(director_init -> name, n);
+    strcpy(director_init -> sex, s);
+    strcpy(director_init -> birth, b);
+    strcpy(director_init -> best_movie, m);
+    
+    director_init -> next = NULL;
+}
+
+void add_director(director *director_add, char *n, char *s, char *b, char *m){
+    
+    int num =0;
+    
+    while(director_add -> next != NULL){
+        director_add = director_add -> next;
+        num++;
+    }
+    
+    director_add -> next = (director *)malloc(sizeof(director));
+    director_add = director_add -> next;
+    
+    director_add -> name = (char *)malloc(sizeof(char) * (strlen(n) + 1));
+    director_add -> sex = (char *)malloc(sizeof(char) * (strlen(s) + 1));
+    director_add -> birth = (char *)malloc(sizeof(char) * (strlen(b) + 1));
+    director_add -> best_movie = (char *)malloc(sizeof(char) * (strlen(m)+ 1));
+    
+    director_add -> serial_num = num + 1;
+    
+    strcpy(director_add -> name, n);
+    strcpy(director_add -> sex, s);
+    strcpy(director_add -> birth, b);
+    strcpy(director_add -> best_movie, m);
+    
+    director_add -> next = NULL;
+}
+/****************************************/
+//                                      //
+//          end                         //
+//                                      //
+/****************************************/
+void put_command(){
+    
+    char *input = (char *)malloc(sizeof(char));
+    
     char **tok;
-	char num_tok;
-
+    char num_tok = 0;
+    
+    printf("(movie) ");
+	scanf("%[^\n]", input);
+    getchar();
+    
+//    if(input == NULL)
+//        put_command();
+    
 	for(int i = 0;; i++){
-		if(a[i] == ' ')
+		if(input[i] == ' ')
 			num_tok++;
-		else if(a[i] == '\0')
+		else if(input[i] == '\0')
 			break;
 	}
-	printf("%d\n", num_tok);
+    
+    if(DEBUG)
+        printf("%d\n", num_tok);
 
 	tok = (char **)malloc(sizeof(char *) * (num_tok + 1));
-	*tok = strtok(a, " ");
+	*tok = strtok(input, " ");
 
 	for (int i = 0; i < num_tok; i++){
 		*(tok + 1 + i) = strtok(NULL, " ");
 	}
+    
+    
+    if(DEBUG)
+        for (int i = 0; i < num_tok + 1; i++)
+            printf("%s \n", *(tok + i));
+    
+    
+    if(*tok == NULL)
+        return;
 
-	for (int i = 0; i < num_tok + 1; i++)
-		printf("%s \n", *(tok + i));
-
-    if (!strcmp(*tok, "search"))
+    else if (!strcmp(*tok, "search"))
     {
 		if (num_tok == 1){
 			printf("string = %s\n", *(tok + 1));
@@ -287,7 +537,6 @@ void put_command(char *a){
 	}
 	else if (!strcmp(*tok, "add"))
 	{
-		printf("m|d|a = %s\n", *(tok + 1));
         add(*(tok + 1));
 	}
 	else if (!strcmp(*tok, "update"))
@@ -342,23 +591,65 @@ void put_command(char *a){
 	}
 	else if (!strcmp(*tok, "end"))
 	{
-
+        end();
 	}
 	else
 	{
+        return;
 	}
 //    print(*tok);
 
 }
 
+void movie_log(int command, int serial, char *t, char *g, char *d, char *y, char *r, char *a){
+    FILE *movie_f;
+    
+    movie_f = fopen("movie_log.txt", "a");
+    
+    if(command == 1)
+        fprintf(movie_f, "add:%d:%s:%s:%s:%s:%s:%s\n", serial, t, g, d, y, r, a);
+    else if(command == 2)
+        fprintf(movie_f, "update:%d:%s:%s:%s:%s:%s:%s\n", serial, t, g, d, y, r, a);
+    else
+        fprintf(movie_f, "delete:%d:%s:%s:%s:%s:%s:%s\n", serial, t, g, d, y, r, a);
+    
+    fclose(movie_f);
+    
+    return;
+    
+}
+
+void end(){
+    exit(1);
+}
+
+void sig_handler(){
+    char exit;
+    
+    printf("\nGet Interrupt Signal.");
+    printf("\nDo you want to exit myMOVIE program (Y/N) ");
+    scanf("%c", &exit);
+    getchar();
+    
+    if(exit == 'Y' || exit == 'y'){
+        end();
+    }
+    else{
+        put_command();
+    }
+}
+
 int main(void){
+    signal(SIGINT, (void *)sig_handler);
+    
 	char *input = (char *)malloc(sizeof(char));
     
-    m = (movie *)malloc(sizeof(movie));
-    d = (director *)malloc(sizeof(director));
-    a = (actor *)malloc(sizeof(actor));
+    m_point = (movie *)malloc(sizeof(movie));
+    d_point = (director *)malloc(sizeof(director));
+    a_point = (actor *)malloc(sizeof(actor));
     
-    put_command(input);
+    while(1)
+        put_command();
 //    print(a);
 
 	printf("\n");
