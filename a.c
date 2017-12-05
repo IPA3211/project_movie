@@ -637,34 +637,39 @@ void link_director(director *director_link, movie *movie_link){
 	printf("link. \n");
 	if (size_of_director == 0)
 		return;
-
-	while(director_link -> next != NULL){
-    printf("link2. \n");
-		if(!strcmp(director_link -> name, movie_link -> director)){
-      printf("link3. \n");
-			movie_link -> direc = director_link;
-			return;
-		}
-		else
-			director_link = director_link -> next;
-	}
+    
+    do{
+        printf("link2. \n");
+        if(!strcmp(director_link -> name, movie_link -> director)){
+            printf("link3. \n");
+            movie_link -> direc = director_link;
+            return;
+        }
+        else
+            if(director_link -> next != NULL)
+                director_link = director_link -> next;
+    }
+    while(director_link -> next != NULL);
 }
 
 void link_director_r(director *director_link, movie *movie_link){
 	printf("link \n");
 	if(size_of_movie == 0)
 		return;
-
-	while(movie_link -> next != NULL){
-		printf("link2 \n");
-		if(!strcmp(movie_link -> director, director_link -> name)){
-      printf("link3 \n");
-			movie_link -> direc = director_link;
-			movie_link = movie_link -> next;
-		}
-		else
-			movie_link = movie_link -> next;
-	}
+    
+    do{
+        printf("link2 \n");
+        if(!strcmp(movie_link -> director, director_link -> name)){
+            printf("link3 \n");
+            movie_link -> direc = director_link;
+            if(movie_link -> next != NULL)
+                movie_link = movie_link -> next;
+        }
+        else
+            if(movie_link -> next != NULL)
+                movie_link = movie_link -> next;
+    }
+    while(movie_link -> next != NULL);
 }
 
 void end(){
@@ -695,6 +700,10 @@ int main(void){
     m_point = (movie *)malloc(sizeof(movie));
     d_point = (director *)malloc(sizeof(director));
     a_point = (actor *)malloc(sizeof(actor));
+    
+    const movie *POINT_MOVIE = m_point;
+    const director *POINT_DIRECTOR = d_point;
+    const actor *POINT_ACTOR = a_point;
 
     while(1)
         put_command();
