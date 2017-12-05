@@ -55,8 +55,8 @@ void add_director (director *, char *, char *, char *, char *);
 
 void movie_log(int, int, char *, char *, char *, char *, char *, char *);
 
-void link_director(director *, movie *);
-void link_director_r(director *, movie *);
+void link_director(movie *);
+void link_director_r(director *);
 
 void end();
 
@@ -68,6 +68,9 @@ int size_of_movie = 0;
 int size_of_actor = 0;
 int size_of_director = 0;
 
+movie *POINT_MOVIE;
+director *POINT_DIRECTOR;
+actor *POINT_ACTOR;
 //cheolsoon
 /*
 void search_main(char *s_opt1, char *s_opt2)
@@ -324,11 +327,210 @@ void add(char *mda){
 
     return;
 }
-
 void update(char *mda, char *option, char *num){
-	if(!strcmp(mda, "a")){
-
+    if(!strcmp(mda, "a")){
+        if(atoi(num) > size_of_actor)
+            return;
+        
+        actor *update_a = POINT_ACTOR;
+        
+        while(update_a -> next != NULL){
+            if(update_a -> serial_num == atoi(num))
+                break;
+            else
+                update_a = update_a -> next;
+        }
+        
+        for(int i = 0; ; i++){
+            if(*(option + i) == '\0')
+                break;
+            
+            switch (*(option + i)) {
+                case 'n':
+                {
+                    char *n = (char *)malloc(sizeof(char));
+                    printf("name >");
+                    scanf("%[^\n]", n);
+                    
+                    strcpy(update_a -> name, n);
+                    break;
+                }
+                case 's':
+                {
+                    char *s = (char *)malloc(sizeof(char));
+                    printf("sex >");
+                    scanf("%[^\n]", s);
+                    
+                    strcpy(update_a -> sex, s);
+                    break;
+                }
+                case 'b':
+                {
+                    char *b = (char *)malloc(sizeof(char));
+                    printf("birth >");
+                    scanf("%[^\n]", b);
+                    
+                    strcpy(update_a -> birth, b);
+                    break;
+                }
+                case 'm':
+                {
+                    char *m = (char *)malloc(sizeof(char));
+                    printf("best movie >");
+                    scanf("%[^\n]", m);
+                    
+                    strcpy(update_a -> best_movie, m);
+                    break;
+                }
+                    
+                default:
+                    break;
+            }
+                
+        }
 	}
+    if(!strcmp(mda, "d")){
+        if(atoi(num) > size_of_director)
+            return;
+        
+        director *update_d = POINT_DIRECTOR;
+        
+        while(update_d -> next != NULL){
+            if(update_d -> serial_num == atoi(num))
+                break;
+            else
+                update_d = update_d -> next;
+        }
+        
+        for(int i = 0; ; i++){
+            if(*(option + i) == '\0')
+                break;
+            
+            switch (*(option + i)) {
+                case 'n':
+                {
+                    char *n = (char *)malloc(sizeof(char));
+                    printf("name >");
+                    scanf("%[^\n]", n);
+                    
+                    strcpy(update_d -> name, n);
+                    link_director_r(update_d);
+                    break;
+                }
+                case 's':
+                {
+                    char *s = (char *)malloc(sizeof(char));
+                    printf("sex >");
+                    scanf("%[^\n]", s);
+                    
+                    strcpy(update_d -> sex, s);
+                    break;
+                }
+                case 'b':
+                {
+                    char *b = (char *)malloc(sizeof(char));
+                    printf("birth >");
+                    scanf("%[^\n]", b);
+                    
+                    strcpy(update_d -> birth, b);
+                    break;
+                }
+                case 'm':
+                {
+                    char *m = (char *)malloc(sizeof(char));
+                    printf("best movie >");
+                    scanf("%[^\n]", m);
+                    
+                    strcpy(update_d -> best_movie, m);
+                    break;
+                }
+                    
+                default:
+                    break;
+            }
+            
+        }
+    }
+    if(!strcmp(mda, "m")){
+        if(atoi(num) > size_of_movie)
+            return;
+        
+        movie *update_m = POINT_MOVIE;
+        
+        while(update_m -> next != NULL){
+            if(update_m -> serial_num == atoi(num))
+                break;
+            else
+                update_m = update_m -> next;
+        }
+        
+        for(int i = 0; ; i++){
+            if(*(option + i) == '\0')
+                break;
+            
+            switch (*(option + i)) {
+                case 't':
+                {
+                    char *t = (char *)malloc(sizeof(char));
+                    printf("title >");
+                    scanf("%s", t);
+                    
+                    strcpy(update_m -> title, t);
+                    break;
+                }
+                case 'g':
+                {
+                    char *g = (char *)malloc(sizeof(char));
+                    printf("genre >");
+                    scanf("%s", g);
+                    
+                    strcpy(update_m -> genre, g);
+                    break;
+                }
+                case 'd':
+                {
+                    char *d = (char *)malloc(sizeof(char));
+                    printf("director >");
+                    scanf("%s", d);
+                    
+                    strcpy(update_m -> director, d);
+                    link_director(update_m);
+                    break;
+                }
+                case 'y':
+                {
+                    char *y = (char *)malloc(sizeof(char));
+                    printf("year >");
+                    scanf("%s", y);
+                    
+                    strcpy(update_m -> year, y);
+                    break;
+                }
+                case 'r':
+                {
+                    char *r = (char *)malloc(sizeof(char));
+                    printf("run time >");
+                    scanf("%s", r);
+                    
+                    strcpy(update_m -> time, r);
+                    break;
+                }
+                case 'a':
+                {
+                    char *a = (char *)malloc(sizeof(char));
+                    printf("actor >");
+                    scanf("%s", a);
+                    
+                    strcpy(update_m -> actors, a);
+                    break;
+                }
+                    
+                default:
+                    break;
+            }
+            
+        }
+    }
 }
 
 //seung mo
@@ -361,7 +563,7 @@ void init_movie (movie *movie_init, char *t, char *g, char *d, char *y, char *r,
     movie_init -> direc = NULL;
 
     movie_log(1, movie_init -> serial_num, movie_init -> title, movie_init -> genre, movie_init -> director, movie_init -> year, movie_init -> time, movie_init -> actors);
-	link_director(d_point, movie_init);
+	link_director(movie_init);
 }
 
 void add_movie(movie *movie_add, char *t, char *g, char *d, char *y, char *r, char *a){
@@ -396,7 +598,7 @@ void add_movie(movie *movie_add, char *t, char *g, char *d, char *y, char *r, ch
     movie_add -> direc = NULL;
 
     movie_log(1, movie_add -> serial_num, movie_add -> title, movie_add -> genre, movie_add -> director, movie_add -> year, movie_add -> time, movie_add -> actors);
-	link_director(d_point, movie_add);
+	link_director(movie_add);
 
 }
 
@@ -457,7 +659,7 @@ void init_director(director *director_init, char *n, char *s, char *b, char *m){
     strcpy(director_init -> best_movie, m);
 
     director_init -> next = NULL;
-	  link_director_r(director_init, m_point);
+	  link_director_r(director_init);
 }
 
 void add_director(director *director_add, char *n, char *s, char *b, char *m){
@@ -485,7 +687,7 @@ void add_director(director *director_add, char *n, char *s, char *b, char *m){
     strcpy(director_add -> best_movie, m);
 
     director_add -> next = NULL;
-	link_director_r(director_add, m_point);
+	link_director_r(director_add);
 }
 /****************************************/
 //                                      //
@@ -633,7 +835,9 @@ void movie_log(int command, int serial, char *t, char *g, char *d, char *y, char
 
 }
 
-void link_director(director *director_link, movie *movie_link){
+void link_director(movie *movie_link){// when movie changed
+    director *director_link = POINT_DIRECTOR;
+    
 	printf("link. \n");
 	if (size_of_director == 0)
 		return;
@@ -652,7 +856,9 @@ void link_director(director *director_link, movie *movie_link){
     while(director_link -> next != NULL);
 }
 
-void link_director_r(director *director_link, movie *movie_link){
+void link_director_r(director *director_link){// when director changed
+    movie *movie_link = POINT_MOVIE;
+    
 	printf("link \n");
 	if(size_of_movie == 0)
 		return;
@@ -701,9 +907,9 @@ int main(void){
     d_point = (director *)malloc(sizeof(director));
     a_point = (actor *)malloc(sizeof(actor));
     
-    const movie *POINT_MOVIE = m_point;
-    const director *POINT_DIRECTOR = d_point;
-    const actor *POINT_ACTOR = a_point;
+    POINT_MOVIE = m_point;
+    POINT_DIRECTOR = d_point;
+    POINT_ACTOR = a_point;
 
     while(1)
         put_command();
