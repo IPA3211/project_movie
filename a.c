@@ -44,6 +44,7 @@ typedef struct actor {
 
 } actor;
 
+void put_command();
 void init_movie (movie *, char *, char *, char *, char *, char *, char *);
 void add_movie (movie *, char *, char *, char *, char *, char *, char *);
 
@@ -57,6 +58,8 @@ void movie_log(int, int, char *, char *, char *, char *, char *, char *);
 
 void link_director(director *, movie *);
 void link_director_r(director *, movie *);
+
+void print(char *, char *);
 
 void end();
 
@@ -172,25 +175,80 @@ void search_directorfile(char *f_keyword, char *f_opt)
     fclose(dir_f);
   }
 }
-
-void print(char * p_opt1, char * p_opt2)
+*/
+void print(char * p1, char * p_serial_num_c)
 {
-  char * p_serial_num;
+  int p_serial_num;
   char * p_opt;
+  movie * print_movie;
+  director * print_director;
+  actor * print_actor;
 
-  if(p_opt2 == NULL)//(movie)print serial_num
+
+  if(p_serial_num_c == NULL)//(movie)print serial_num
   {
-    p_serial_num = p_opt1;
-    p_opt=NULL;
-
+    printf("print m|d|a : choice one please\n");
+    put_command();
   }
   else//(movie)print opt serial_num
   {
-    p_opt = p_opt1;
-    p_serial_num = p_opt2;
+    p_opt = p1;
+    p_serial_num = atoi(p_serial_num_c);
   }
+
+  if(strcmp(p_opt, "m") == 0)
+  {
+    print_movie = m_point;
+    while(print_movie -> next != NULL){
+      print_movie = print_movie -> next;
+      if(p_serial_num == print_movie -> serial_num){
+        break;
+      }
+    }
+    printf("%d, %s, %s\n", p_serial_num, print_movie -> title, print_movie -> genre);
+    if(print_movie -> direc -> birth == NULL){
+      printf("  D : %s(-)\n", print_movie -> director);
+    }
+    else
+      printf("  D : %s(%s)\n", print_movie -> director, print_movie -> direc -> birth);
+
+    if(print_movie -> act -> birth == NULL){
+      printf("  A1 : %s(-)\n", print_movie->actors);
+    }
+    else
+      printf("  A1 : %s(%s)\n", print_movie->actors, print_movie->act->birth);
+
+  }
+  else if(strcmp(p_opt, "d") == 0)
+  {
+    print_director = d_point;
+    while(print_director -> next != NULL){
+      print_director = print_director -> next;
+      if(p_serial_num == print_director -> serial_num){
+        break;
+      }
+    }
+    printf("%d, %s, %s, %s\n", p_serial_num, print_director->name,
+    print_director->sex, print_director->birth);
+    //best_movie 1 , 2 , 3
+  }
+  else if(strcmp(p_opt, "a") == 0)
+  {
+    print_actor = a_point;
+    while(print_actor -> next != NULL){
+      print_actor = print_actor -> next;
+      if(p_serial_num == print_actor -> serial_num){
+        break;
+      }
+    }
+    printf("%d, %s, %s, %s\n", p_serial_num, print_actor->name,
+    print_actor->sex, print_actor->birth);
+    //best_movie 1 , 2 , 3
+  }
+  else
+    printf("print :  option Error\n");
 }
-*/
+
 
 //jeawoo
 
@@ -698,7 +756,6 @@ int main(void){
 
     while(1)
         put_command();
-//    print(a);
 
 	printf("\n");
 	return 0;
