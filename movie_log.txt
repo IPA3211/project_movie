@@ -1,0 +1,7 @@
+add:1:1:2:1:ss:aa:dd
+add:2:wdw:aa:1:sds:aa:dd
+add:3:ss:aa:2:ss:aa:dd
+add:4:dds:sss:2:aa:ss:dd
+add:5:222:33:2:dd:sss:aa
+add:6:333:22:1:dd:ss:aa
+add:7:222:s:2:aas:ss:dd
