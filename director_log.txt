@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-add:1:1:male:20170504:ill
-add:2:2:female:20180203:123
-add:3:ss:aa:ww:ee
-=======
 add:1:cheolsoon:man:980819:lionking
 add:2:soungmo:woman:98:lion
 add:3:jaewoo:98:woman:king
 add:4:junwon:middle:97:kong
->>>>>>> cb0f7ce23972bcc370638619b6fb48eb14fcbf9d
