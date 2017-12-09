@@ -194,51 +194,6 @@ void search_directorfile(char *f_keyword, char *f_opt)
 }
 */
 
-void delete(char * del_opt, char * del_num)
-{
-    int del_serial;
-    movie *del_movie , *f_del_movie, *n_del_movie;
-    director *del_director, *f_del_director, *n_del_director;
-    actor *del_actor, *f_del_actor, *n_del_actor;
-    
-    del_movie = (movie *)malloc(sizeof(movie));
-    f_del_movie = (movie *)malloc(sizeof(movie));
-    n_del_movie = (movie *)malloc(sizeof(movie));
-
-    if(del_num == NULL){
-        printf(" delete m|a|d serial_num \n");
-    }
-    else{
-        del_serial = atoi(del_num);
-        if(strcmp(del_opt, "m") == 0){
-            del_movie = POINT_MOVIE;
-            if(atoi(del_num) == 1){ //delete serial_num : 1
-                n_del_movie = del_movie->next;
-                del_movie->serial_num = 1;
-                del_movie->next = n_del_movie;
-            }
-            while(del_movie -> next != NULL){
-                if(del_serial == del_movie->serial_num){
-                    break;
-                }
-                f_del_movie = del_movie;//before_node
-                del_movie = del_movie->next;//present_node
-                n_del_movie = del_movie->next;//next_node
-            }
-            del_movie = (movie *)malloc(sizeof(movie));//make a new node
-            del_movie->serial_num = del_serial;
-            f_del_movie->next = del_movie;
-            del_movie->next = n_del_movie;
-        }
-        else if(strcmp(del_opt, "d") == 0){
-            
-        }
-        else if(strcmp(del_opt, "a") == 0){
-            
-        }
-    }
-}
-
 void print(char * p1, char * p_serial_num_c)
 {
   int p_serial_num;
@@ -251,7 +206,7 @@ void print(char * p1, char * p_serial_num_c)
   if(p_serial_num_c == NULL)//(movie)print serial_num
   {
     printf("print m|d|a : choice one please\n");
-    return;
+    put_command();
   }
   else//(movie)print opt serial_num
   {
@@ -313,6 +268,41 @@ void print(char * p1, char * p_serial_num_c)
     
 }
 
+void delete(char * del_opt, char * del_num)
+{
+  int del_serial;
+  movie * del_movie , * f_del_movie, * n_del_movie;
+  director * del_director, * f_del_director, * n_del_director;
+  actor * del_actor, * f_del_actor, * n_del_actor;
+
+  if(del_num == NULL){
+    printf(" delete m|a|d serial_num \n");
+  }
+  else{
+    del_serial = atoi(del_num);
+    if(strcmp(del_opt, "m") == 0){
+      del_movie = POINT_MOVIE;
+      while(del_movie -> next != NULL){
+        if(del_serial == del_movie->serial_num){
+          break;
+        }
+        f_del_movie = del_movie;//before_node
+        del_movie = del_movie->next;//present_node
+        n_del_movie = del_movie->next;//next_node
+      }
+      del_movie = (movie *)malloc(sizeof(movie));//make a new node
+      del_movie->serial_num = del_serial;
+      f_del_movie->next = del_movie;
+      del_movie->next = n_del_movie;
+    }
+    else if(strcmp(del_opt, "d") == 0){
+
+    }
+    else if(strcmp(del_opt, "a") == 0){
+
+    }
+  }
+}
 
 //jeawoo
 
@@ -326,14 +316,14 @@ int read_movie_log(void)
     char *name, *sex, *birth, *best_mov;
     char *serial_a, *serial_d, *serial_m;
     int check;
-    
+
     line = (char *)malloc(sizeof(char));
     token = (char *)malloc(sizeof(char));
-    
+
     m_log = fopen("movie_log.txt", "r");
     a_log = fopen("actor_log.txt", "r");
     d_log = fopen("director_log.txt", "r");
-    
+
     while(fscanf(m_log, "%s", line) != EOF){
         tag = (char *)malloc(sizeof(char));
         serial_m = (char *)malloc(sizeof(char));
@@ -343,35 +333,35 @@ int read_movie_log(void)
         year = (char *)malloc(sizeof(char));
         running = (char *)malloc(sizeof(char));
         actor = (char *)malloc(sizeof(char));
-        
+
         token = strtok(line, ":");
         tag = token;
-        
+
         token = strtok(NULL, ":");
         serial_m = token;
-        
+
         token = strtok(NULL, ":");
         title = token;
-        
+
         token = strtok(NULL, ":");
         genre = token;
-        
+
         token = strtok(NULL, ":");
         director = token;
-        
+
         token = strtok(NULL, ":");
         year = token;
-        
+
         token = strtok(NULL, ":");
         running = token;
-        
+
         token = strtok(NULL, ":");
         actor = token;
-        
+
         token = strtok(NULL, ":");
-        
+
         printf("%s %s %s %s %s %s %s %s \n", tag, serial_m, title, genre, director, year, running, actor);
-        
+
         if (!strcmp(tag, "add")){
             if(size_of_movie == 0){
                 printf("init_movie\n");
@@ -402,7 +392,7 @@ int read_movie_log(void)
             movie_update(serial_m, title, genre, director, year, running, actor, 1);
         }
     }
-    
+
     while(fscanf(a_log, "%s", line) != EOF){
         tag = (char *)malloc(sizeof(char));
         serial_a = (char *)malloc(sizeof(char));
@@ -410,29 +400,29 @@ int read_movie_log(void)
         sex = (char *)malloc(sizeof(char));
         birth = (char *)malloc(sizeof(char));
         best_mov = (char *)malloc(sizeof(char));
-        
+
         token = strtok(line, ":");
         tag = token;
-        
+
         token = strtok(NULL, ":");
         serial_a = token;
-        
+
         token = strtok(NULL, ":");
         name= token;
-        
+
         token = strtok(NULL, ":");
         sex = token;
-        
+
         token = strtok(NULL, ":");
         birth = token;
-        
+
         token = strtok(NULL, ":");
         best_mov = token;
-        
+
         token = strtok(NULL, ":");
-        
+
         printf("%s %s %s %s %s %s\n", tag, serial_a, name, sex, birth, best_mov);
-        
+
         if (!strcmp(tag, "add")){
             if(size_of_actor == 0){
                 printf("init_movie\n");
@@ -464,7 +454,7 @@ int read_movie_log(void)
 //        free(birth);
 //        free(best_mov);
     }
-    
+
     while(fscanf(d_log, "%s", line) != EOF){
         tag = (char *)malloc(sizeof(char));
         serial_d = (char *)malloc(sizeof(char));
@@ -472,29 +462,29 @@ int read_movie_log(void)
         sex = (char *)malloc(sizeof(char));
         birth = (char *)malloc(sizeof(char));
         best_mov = (char *)malloc(sizeof(char));
-        
+
         token = strtok(line, ":");
         tag = token;
-        
+
         token = strtok(NULL, ":");
         serial_d = token;
-        
+
         token = strtok(NULL, ":");
         name = token;
-        
+
         token = strtok(NULL, ":");
         sex = token;
-        
+
         token = strtok(NULL, ":");
         birth = token;
-        
+
         token = strtok(NULL, ":");
         best_mov = token;
-        
+
         token = strtok(NULL, ":");
-        
+
         printf("%s %s %s %s %s %s \n", tag, serial_d, name, sex, birth, best_mov);
-        
+
         if (!strcmp(tag, "add")){
             if(size_of_director == 0){
                 printf("init_movie\n");
@@ -520,7 +510,7 @@ int read_movie_log(void)
             director_update(serial_d, name, sex, birth, best_mov, 1);
         }
     }
-    
+
     printf("finish\n");
 
     fclose(m_log);
@@ -677,7 +667,7 @@ void add(char *mda){
 }
 //
 //void save(char *mda, char *option, char *file_name){
-//    
+//
 //}
 
 void update(char *mda, char *option, char *num){
@@ -730,7 +720,6 @@ void update(char *mda, char *option, char *num){
                     getchar();
                     if (option != NULL)
                         break;
-                
                 case 'b':
                     b = (char *)malloc(sizeof(char));
                     printf("birth >");
@@ -738,7 +727,6 @@ void update(char *mda, char *option, char *num){
                     getchar();
                     if (option != NULL)
                         break;
-                
                 case 'm':
                     m = (char *)malloc(sizeof(char));
                     printf("best movie >");
@@ -751,7 +739,6 @@ void update(char *mda, char *option, char *num){
             }
             if (option == NULL)
                 break;
-                
         }
         actor_update(num, n, s, b, m, 0);
         free(n);
@@ -769,7 +756,7 @@ void update(char *mda, char *option, char *num){
         for(int i = 0; ; i++){
             if(*(option + i) == '\0')
                 break;
-            
+
             switch (*(option + i)) {
                 case 'n':
                     n = (char *)malloc(sizeof(char));
@@ -778,7 +765,6 @@ void update(char *mda, char *option, char *num){
                     getchar();
                     if (option != NULL)
                         break;
-                
                 case 's':
                     s = (char *)malloc(sizeof(char));
                     printf("sex >");
@@ -786,7 +772,6 @@ void update(char *mda, char *option, char *num){
                     getchar();
                     if (option != NULL)
                         break;
-                
                 case 'b':
                     b = (char *)malloc(sizeof(char));
                     printf("birth >");
@@ -794,7 +779,6 @@ void update(char *mda, char *option, char *num){
                     getchar();
                     if (option != NULL)
                         break;
-                
                 case 'm':
                     m = NULL;
                     printf("best movie >");
@@ -822,12 +806,10 @@ void update(char *mda, char *option, char *num){
         char *r = NULL;
         char *a = NULL;
 
-        
-        
         for(int i = 0; ; i++){
             if(*(option + i) == '\0')
                 break;
-            
+
             switch (*(option + i)) {
                 case 't':
                     t = (char *)malloc(sizeof(char));
@@ -836,7 +818,6 @@ void update(char *mda, char *option, char *num){
                     getchar();
                     if (option != NULL)
                         break;
-                    
                 case 'g':
                     g = (char *)malloc(sizeof(char));
                     printf("genre >");
@@ -852,7 +833,7 @@ void update(char *mda, char *option, char *num){
                     getchar();
                     if (option != NULL)
                         break;
-                
+            
                 case 'y':
                     y = (char *)malloc(sizeof(char));
                     printf("year >");
@@ -860,7 +841,7 @@ void update(char *mda, char *option, char *num){
                     getchar();
                     if (option != NULL)
                         break;
-                
+        
                 case 'r':
                     r = (char *)malloc(sizeof(char));
                     printf("run time >");
@@ -868,7 +849,7 @@ void update(char *mda, char *option, char *num){
                     getchar();
                     if (option != NULL)
                         break;
-                    
+    
                 case 'a':
                     a = NULL;
                     printf("actor >");
@@ -929,9 +910,9 @@ void search(char *option, char *string){
 
 void init_movie (movie *movie_init, char *t, char *g, char *d, char *y, char *r, char *a, int log){
     //    movie_init = (movie *)malloc(sizeof(movie));
-    
+
     movie_init = POINT_MOVIE;
-    
+
     movie_init -> title = (char *)malloc(sizeof(char) * (strlen(t) + 1));
     movie_init -> genre = (char *)malloc(sizeof(char) * (strlen(g) + 1));
     movie_init -> director = (char *)malloc(sizeof(char) * (strlen(d) + 1));
@@ -950,14 +931,14 @@ void init_movie (movie *movie_init, char *t, char *g, char *d, char *y, char *r,
 
     movie_init -> next = NULL;
     movie_init -> direc = NULL;
-    
+
     printf("%d %s %s %s %s %s %s \n", movie_init -> serial_num, movie_init -> title, movie_init -> genre, movie_init -> director, movie_init -> year, movie_init -> time, movie_init -> actors);
-    
+
     if(log == 0)
         movie_log(1, movie_init -> serial_num, movie_init -> title, movie_init -> genre, movie_init -> director, movie_init -> year, movie_init -> time, movie_init -> actors);
-    
+
 	link_director(movie_init);
-    
+
 }
 
 void add_movie(movie *movie_add, char *t, char *g, char *d, char *y, char *r, char *a, int log){
@@ -1003,14 +984,14 @@ void add_movie(movie *movie_add, char *t, char *g, char *d, char *y, char *r, ch
 
     movie_add -> next = NULL;
     movie_add -> direc = NULL;
-    
+
     printf("%d %s %s %s %s %s %s \n", movie_add -> serial_num, movie_add -> title, movie_add -> genre, movie_add -> director, movie_add -> year, movie_add -> time, movie_add -> actors);
 
     if(log == 0)
         movie_log(1, movie_add -> serial_num, movie_add -> title, movie_add -> genre, movie_add -> director, movie_add -> year, movie_add -> time, movie_add -> actors);
-    
+
 	link_director(movie_add);
-        
+
 
 }
 
@@ -1028,7 +1009,7 @@ void init_actor(actor *actor_init, char *n, char *s, char *b, char *m, int log){
     strcpy(actor_init -> best_movie, m);
 
     actor_init -> next = NULL;
-    
+
     if(log == 0)
         actor_log(1 ,actor_init -> serial_num ,actor_init -> name, actor_init -> sex, actor_init -> birth, actor_init -> best_movie);
 }
@@ -1070,10 +1051,10 @@ void add_actor(actor *actor_add, char *n, char *s, char *b, char *m, int log){
     strcpy(actor_add -> best_movie, m);
 
     actor_add -> next = NULL;
-    
+
     if(log == 0)
         actor_log(1, actor_add -> serial_num, actor_add -> name, actor_add -> sex, actor_add -> birth, actor_add -> best_movie);
-    
+
 }
 
 void init_director(director *director_init, char *n, char *s, char *b, char *m, int log){
@@ -1091,7 +1072,7 @@ void init_director(director *director_init, char *n, char *s, char *b, char *m, 
 
     director_init -> next = NULL;
     link_director_r(director_init);
-    
+
     if(log == 0)
         director_log(1, director_init -> serial_num, director_init -> name, director_init -> sex, director_init -> birth, director_init -> best_movie);
 }
@@ -1134,7 +1115,7 @@ void add_director(director *director_add, char *n, char *s, char *b, char *m, in
 
     director_add -> next = NULL;
 	link_director_r(director_add);
-    
+
     if(log == 0)
         director_log(1, director_add -> serial_num, director_add -> name, director_add -> sex, director_add -> birth, director_add -> best_movie);
 }
@@ -1310,18 +1291,18 @@ void director_log(int command, int serial, char *n, char *s, char *b, char *bm){
         bm = "=";
     
     movie_f = fopen("director_log.txt", "a");
-    
+
     if(command == 1)
         fprintf(movie_f, "add:%d:%s:%s:%s:%s\n", serial, n, s, b, bm);
     else if(command == 2)
         fprintf(movie_f, "update:%d:%s:%s:%s:%s\n", serial, n, s, b, bm);
     else
         fprintf(movie_f, "delete:%d:%s:%s:%s:%s\n", serial, n, s, b, bm);
-    
+
     fclose(movie_f);
-    
+
     return;
-    
+
 }
 
 void actor_log(int command, int serial, char *n, char *s, char *b, char *bm){
@@ -1337,18 +1318,18 @@ void actor_log(int command, int serial, char *n, char *s, char *b, char *bm){
         bm = "=";
     
     movie_f = fopen("actor_log.txt", "a");
-    
+
     if(command == 1)
         fprintf(movie_f, "add:%d:%s:%s:%s:%s\n", serial, n, s, b, bm);
     else if(command == 2)
         fprintf(movie_f, "update:%d:%s:%s:%s:%s\n", serial, n, s, b, bm);
     else
         fprintf(movie_f, "delete:%d:%s:%s:%s:%s\n", serial, n, s, b, bm);
-    
+
     fclose(movie_f);
-    
+
     return;
-    
+
 }
 
 /*******************************************/
@@ -1364,11 +1345,11 @@ void actor_log(int command, int serial, char *n, char *s, char *b, char *bm){
 
 void link_director(movie *movie_link){// when movie changed
     director *director_link = POINT_DIRECTOR;
-    
+
     printf("link. \n");
     if (size_of_director == 0)
         return;
-    
+
     do{
         printf("link2. \n");
         if(!strcmp(director_link -> name, movie_link -> director)){
@@ -1388,11 +1369,11 @@ void link_director(movie *movie_link){// when movie changed
 
 void link_director_r(director *director_link){// when director changed
     movie *movie_link = POINT_MOVIE;
-    
+
     printf("link \n");
     if(size_of_movie == 0)
         return;
-    
+
     do{
         printf("link2 \n");
         if(!strcmp(movie_link -> director, director_link -> name)){
@@ -1425,7 +1406,7 @@ void link_director_r(director *director_link){// when director changed
 /*******************************************/
 
 void save(char *mda, char *option, char *file){
-    
+
     if(!strcmp(mda, "m")){
         printf("write_movie go\n");
         write_movie(option, file);
@@ -1442,15 +1423,15 @@ void write_movie(char *option, char *file_name){
     printf("write_movie in\n");
     FILE *m_write;
     movie *movie_w = POINT_MOVIE;
-    
+
     if(file_name == NULL)
         m_write = fopen("movie_list.txt", "w");
     else
         m_write = fopen(file_name, "w");
-    
+
     if(size_of_movie == 0)
         return;
-    
+
     if(option == NULL){
         printf("open_NULL \n");
         do{
@@ -1462,7 +1443,7 @@ void write_movie(char *option, char *file_name){
         }
         while(1);
     }
-    
+
     else{
         do{
             fprintf(m_write, "%d", movie_w -> serial_num);
@@ -1471,33 +1452,33 @@ void write_movie(char *option, char *file_name){
                     case 't':
                         fprintf(m_write, ":%s", movie_w -> title);
                         break;
-                        
+
                     case 'g':
                         fprintf(m_write, ":%s", movie_w -> genre);
                         break;
-                        
+
                     case 'd':
                         fprintf(m_write, ":%s", movie_w -> director);
                         break;
-                        
+
                     case 'y':
                         fprintf(m_write, ":%s", movie_w -> year);
                         break;
-                        
+
                     case 'r':
                         fprintf(m_write, ":%s", movie_w -> time);
                         break;
-                        
+
                     case 'a':
                         fprintf(m_write, ":%s", movie_w -> actors);
                         break;
-                        
+
                     default:
                         break;
                 }
-            
+
             fprintf(m_write, "\n");
-            
+
             if(movie_w -> next != NULL)
                 movie_w = movie_w -> next;
             else
@@ -1505,22 +1486,22 @@ void write_movie(char *option, char *file_name){
         }
         while(1);
     }
-    
+
     fclose(m_write);
 }
 
 void write_actor(char *option, char *file_name){
     FILE *a_write;
     actor *actor_w = POINT_ACTOR;
-    
+
     if(file_name == NULL)
         a_write = fopen("actor_list.txt", "w");
     else
         a_write = fopen(file_name, "w");
-    
+
     if(size_of_actor == 0)
         return;
-    
+
     if(option == NULL){
         do{
             fprintf(a_write, "%d:%s:%s:%s:%s\n", actor_w -> serial_num, actor_w -> name, actor_w -> sex, actor_w -> birth, actor_w -> best_movie);
@@ -1531,7 +1512,7 @@ void write_actor(char *option, char *file_name){
         }
         while(1);
     }
-    
+
     else{
         do{
             fprintf(a_write, "%d", actor_w -> serial_num);
@@ -1540,25 +1521,25 @@ void write_actor(char *option, char *file_name){
                     case 'n':
                         fprintf(a_write, ":%s", actor_w -> name);
                         break;
-                        
+
                     case 's':
                         fprintf(a_write, ":%s", actor_w -> sex);
                         break;
-                        
+
                     case 'b':
                         fprintf(a_write, ":%s", actor_w -> birth);
                         break;
-                        
+
                     case 'm':
                         fprintf(a_write, ":%s", actor_w -> best_movie);
                         break;
-                        
+
                     default:
                         break;
                 }
-            
+
             fprintf(a_write, "\n");
-            
+
             if(actor_w -> next != NULL)
                 actor_w = actor_w -> next;
             else
@@ -1572,15 +1553,15 @@ void write_actor(char *option, char *file_name){
 void write_director(char *option, char *file_name){
     FILE *d_write;
     director *director_w = POINT_DIRECTOR;
-    
+
     if(file_name == NULL)
         d_write = fopen("director_list.txt", "w");
     else
         d_write = fopen(file_name, "w");
-    
+
     if(size_of_director == 0)
         return;
-    
+
     if(option == NULL){
         do{
             fprintf(d_write, "%d:%s:%s:%s:%s\n", director_w -> serial_num, director_w -> name, director_w -> sex, director_w -> birth, director_w -> best_movie);
@@ -1591,7 +1572,7 @@ void write_director(char *option, char *file_name){
         }
         while(1);
     }
-    
+
     else{
         do{
             fprintf(d_write, "%d", director_w -> serial_num);
@@ -1600,25 +1581,25 @@ void write_director(char *option, char *file_name){
                     case 'n':
                         fprintf(d_write, ":%s", director_w -> name);
                         break;
-                        
+
                     case 's':
                         fprintf(d_write, ":%s", director_w -> sex);
                         break;
-                        
+
                     case 'b':
                         fprintf(d_write, ":%s", director_w -> birth);
                         break;
-                        
+
                     case 'm':
                         fprintf(d_write, ":%s", director_w -> best_movie);
                         break;
-                        
+
                     default:
                         break;
                 }
-            
+
             fprintf(d_write, "\n");
-            
+
             if(director_w -> next != NULL)
                 director_w = director_w -> next;
             else
@@ -1626,7 +1607,7 @@ void write_director(char *option, char *file_name){
         }
         while(1);
     }
-    
+
     fclose(d_write);
 }
 /*******************************************/
@@ -1645,7 +1626,7 @@ int compare(const void *a, const void *b){
 
 
 void sort(char *mda, char *option, char *file){
-    
+
     if(!strcmp(mda, "m")){
         printf("sort_movie go\n");
         sort_movie(option, file);
@@ -1867,7 +1848,6 @@ void sort_movie(char *option, char *file){
                 
             }
             while(1);
-            
             break;
         }
         case 'r':
@@ -2431,45 +2411,45 @@ void sort_director(char *option, char *file){
 //                                         //
 /*******************************************/
 void put_command(){
-    
+
     char *input = (char *)malloc(sizeof(char));
-    
+
     char **tok;
     char num_tok = 0;
-    
+
     printf("(movie) ");
     scanf("%[^\n]", input);
     getchar();
-    
+
     //    if(input == NULL)
     //        put_command();
-    
+
     for(int i = 0;; i++){
         if(input[i] == ' ')
             num_tok++;
         else if(input[i] == '\0')
             break;
     }
-    
+
     if(DEBUG)
         printf("%d\n", num_tok);
-    
+
     tok = (char **)malloc(sizeof(char *) * (num_tok + 1));
     *tok = strtok(input, " ");
-    
+
     for (int i = 0; i < num_tok; i++){
         *(tok + 1 + i) = strtok(NULL, " ");
     }
-    
-    
+
+
     if(DEBUG)
         for (int i = 0; i < num_tok + 1; i++)
             printf("%s \n", *(tok + i));
-    
-    
+
+
     if(*tok == NULL)
         return;
-    
+
     else if (!strcmp(*tok, "search"))
     {
         if (num_tok == 1){
@@ -2480,7 +2460,7 @@ void put_command(){
             printf("string = %s\n", *(tok + 2));
         }
     }
-    
+
     else if (!strcmp(*tok,"print"))
     {
         print(*(tok + 1), *(tok + 2));
@@ -2591,12 +2571,12 @@ int main(void){
     m_point = (movie *)malloc(sizeof(movie));
     d_point = (director *)malloc(sizeof(director));
     a_point = (actor *)malloc(sizeof(actor));
-    
+
     POINT_MOVIE = m_point;
     POINT_DIRECTOR = d_point;
     POINT_ACTOR = a_point;
-    
-    
+
+
     printf("loading in\n");
     read_movie_log();
     printf("loading out\n");
