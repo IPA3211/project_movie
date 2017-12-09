@@ -287,21 +287,29 @@ void print(char * p1, char * p_serial_num_c)
 void delete(char * del_opt, char * del_num)
 {
   int del_serial;
-  movie * del_movie;
-  director * del_director;
-  actor * del_actor;
-  del_director
+  movie * del_movie , * f_del_movie, * n_del_movie;
+  director * del_director, * f_del_director, * n_del_director;
+  actor * del_actor, * f_del_actor, * n_del_actor;
+
   if(del_num == NULL){
     printf(" delete m|a|d serial_num \n");
   }
   else{
     del_serial = atoi(del_num);
     if(strcmp(del_opt, "m") == 0){
+      del_movie = POINT_MOVIE;
       while(del_movie -> next != NULL){
-        if(del_serial == del_movie -> serial_num){
+        if(del_serial == del_movie->serial_num){
           break;
         }
+        f_del_movie = del_movie;//before_node
+        del_movie = del_movie->next;//present_node
+        n_del_movie = del_movie->next;//next_node
       }
+      del_movie = (movie *)malloc(sizeof(movie));//make a new node
+      del_movie->serial_num = del_serial;
+      f_del_movie->next = del_movie;
+      del_movie->next = n_del_movie;
     }
     else if(strcmp(del_opt, "d") == 0){
 
