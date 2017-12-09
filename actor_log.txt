@@ -1,0 +1,6 @@
+add:1:ss:www:dd:ss
+add:2:kang:male:19980706:wow
+add:3:kang:male:1990203:wow
+update:1:=:=:=:=
+update:2:kang:wow:yeah:wow
+update:2:kang:=:=:=
